@@ -9,21 +9,22 @@
    -78.69931600000963
   ]
  ],
+ "data_as_of": "2026-10-26",
  "summary": {
-  "segments": 287,
-  "miles": 179.5,
+  "segments": 301,
+  "miles": 184.0,
   "tiers": {
    "High": {
-    "segments": 102,
-    "miles": 78.4
+    "segments": 128,
+    "miles": 92.0
    },
    "Low": {
-    "segments": 70,
-    "miles": 23.8
+    "segments": 59,
+    "miles": 18.9
    },
    "Medium": {
-    "segments": 115,
-    "miles": 77.3
+    "segments": 114,
+    "miles": 73.2
    }
   },
   "weights": {

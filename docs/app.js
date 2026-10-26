@@ -24,6 +24,7 @@ const LABELS = {
   year: "Year",
   description: "Description",
   facility: "Facility",
+  side: "Side of road",
   dept: "Dept",
 };
 
@@ -124,7 +125,7 @@ function addLegend() {
       ${line(STYLES.trailExisting)}Existing trail<br>
       ${line(STYLES.trailProposed)}Proposed trail<br>
       ${line(STYLES.greenways)}Greenway<br>
-      ${line(STYLES.bikeExisting)}Bike lane<br>
+      ${line(STYLES.bikeExisting)}Bike facility<br>
       ${line(STYLES.bikeFuture)}Future bike facility`;
     return div;
   };
@@ -134,6 +135,7 @@ function addLegend() {
 async function main() {
   const meta = await (await fetch("data/meta.json")).json();
   map.fitBounds(meta.bounds);
+  document.getElementById("as-of").textContent = `Data as of ${meta.data_as_of}.`;
 
   const [county, segments, trails, greenways, bikeExisting, bikeFuture] = await Promise.all(
     ["county", "segments", "trails", "greenways", "bike_existing", "bike_future"].map(load),
@@ -152,7 +154,7 @@ async function main() {
     "Existing trails": lines(trails, STYLES.trailExisting, "Trail", (f) => !isProposed(f)),
     "Proposed trails": lines(trails, STYLES.trailProposed, "Proposed trail", isProposed),
     Greenways: lines(greenways, STYLES.greenways, "Greenway"),
-    "Bike lanes": lines(bikeExisting, STYLES.bikeExisting, "Bike facility"),
+    "Bike facilities": lines(bikeExisting, STYLES.bikeExisting, "Bike facility"),
     "Future bike facilities": lines(bikeFuture, STYLES.bikeFuture, "Future bike facility"),
   };
   for (const [label, layer] of Object.entries(overlays)) {

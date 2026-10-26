@@ -81,6 +81,19 @@ ETT/
 - Sanity checks: Winterberry Ridge Dr segment -> High 66, already ~2,700 ft of trail inside;
   Avondale Dr spur (segment 45) -> High 72.
 - Weights and thresholds live at the top of `corridors.py` for tuning.
+- Step 3 publish done: https://davidbradway.github.io/Energy-Transportation-Trails/ (Actions
+  workflow tests, then deploys `docs/`).
+- `--refresh` done (2026-10-26). `build.py` now downloads from the ArcGIS services into `raw/`
+  instead of reading the Jan 2023 files. Source changes since 2023:
+  - "Existing Greenways" is no longer published; greenways are now `Facility_Type = Greenway`
+    in the Existing Bike Facilities layer.
+  - Existing Bike Facilities has a new schema and 614 records (was 67), adding shared-use paths
+    and protected bike lanes.
+  - Trails moved to `CityworksServices/Parks_and_Recreation/MapServer/8` (same schema).
+  - Easements barely changed in Durham (~3 acres added).
+  - Result: 301 segments; High 128 / 92 mi, Medium 114 / 73 mi, Low 59 / 19 mi. Segments
+    linking 2+ networks rose from 6 to 20, almost all from the fuller bike data.
+- Remaining: sidebar content, top-segments list, road crossings, tree canopy, custom domain.
 
 ## Notes
 

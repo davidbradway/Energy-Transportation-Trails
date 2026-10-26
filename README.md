@@ -49,15 +49,17 @@ python -m venv .venv
 .venv/Scripts/activate          # Windows; use `source .venv/bin/activate` elsewhere
 pip install -r requirements-dev.txt
 
-python build.py                 # raw GeoJSON -> docs/data/
+python build.py --refresh       # download source data to raw/, build docs/data/
 python -m http.server -d docs 8000
 ```
 
 Then open http://localhost:8000. Opening `docs/index.html` directly from disk won't work, because
 the browser blocks the data requests.
 
-`build.py` expects the raw GeoJSON downloads (listed below) in the repository root. They are not
-committed because of their size.
+`--refresh` downloads the latest version of every layer from its ArcGIS service (about 15 seconds)
+and records the date in `raw/sources.json`, which the map shows as "Data as of". Run
+`python build.py` without the flag to rebuild from the copies already in `raw/`, for example
+after changing the scoring. `raw/` is not committed.
 
 ## Tests
 
@@ -67,6 +69,8 @@ pytest
 
 - `tests/test_corridors.py`: segmentation and scoring on small synthetic corridors.
 - `tests/test_build.py`: geometry cleanup and attribute tidying.
+- `tests/test_fetch.py`: paged downloads from ArcGIS services (with the network faked), and
+  that no personal fields are ever requested.
 - `tests/test_data.py`: checks on the published files in `docs/data/`: geometry types,
   coordinates, file size, score consistency, and that no landowner names are published. These
   tests are skipped until `build.py` has been run.
@@ -93,15 +97,15 @@ tests/
 | Layer | Source |
 |---|---|
 | Duke Energy transmission easements | [NC OneMap](https://www.nconemap.gov/datasets/6c9a740f143b49f5bfcffe59c082b1c2_0/explore) |
-| Existing and proposed trails | [City of Durham Open Data](https://live-durhamnc.opendata.arcgis.com/datasets/DurhamNC::existing-and-proposed-trails) |
-| Existing greenways | [City of Durham Open Data](https://live-durhamnc.opendata.arcgis.com/datasets/DurhamNC::existing-greenways) |
-| Existing bike facilities | [City of Durham Open Data](https://live-durhamnc.opendata.arcgis.com/datasets/DurhamNC::existing-bike-facilities) |
+| Existing and proposed trails | City of Durham, [Parks and Recreation: Trails and Paths](https://webgis2.durhamnc.gov/server/rest/services/CityworksServices/Parks_and_Recreation/MapServer/8) |
+| Existing bike facilities and greenways | [City of Durham Open Data](https://live-durhamnc.opendata.arcgis.com/datasets/DurhamNC::existing-bike-facilities) |
 | Future bike facilities | [City of Durham Open Data](https://live-durhamnc.opendata.arcgis.com/datasets/DurhamNC::future-bike-facilities) |
 | Durham County boundary | [U.S. Census TIGERweb](https://tigerweb.geo.census.gov/) |
 | Base map | © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors; satellite imagery © Esri |
 
-The source data was downloaded in January 2023. Landowner names in the easement data are
-deliberately left out of everything published here.
+The exact service URLs are in `SOURCES` in [build.py](build.py). Only the fields the map needs
+are downloaded, so landowner names in the easement data and staff contact details in the
+project data are never fetched or published.
 
 ## Further reading
 
