@@ -8,12 +8,92 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="sidebar-open">
   <header>
-    <h1>ETT <span>Energy Transportation Trails</span></h1>
-    <p>Duke Energy transmission easements in Durham County, overlaid on existing and planned trails, greenways and bike facilities. <span id="as-of"></span></p>
+    <button id="sidebar-toggle" type="button" aria-controls="sidebar" aria-expanded="true">About &amp; top corridors</button>
+    <div>
+      <h1>ETT <span>Energy Transportation Trails</span></h1>
+      <p>Duke Energy transmission easements in Durham County, overlaid on existing and planned trails, greenways and bike facilities. <span id="as-of"></span></p>
+    </div>
   </header>
-  <div id="map"></div>
+
+  <main>
+    <aside id="sidebar">
+      <section>
+        <h2>Trails along power lines</h2>
+        <p>
+          Transmission line corridors are long, already cleared, and continuous across property
+          lines. The question is whether they could carry bike and hike trails, the way the
+          American Tobacco Trail reuses an old rail line.
+        </p>
+        <p>
+          This map splits every Duke Energy easement in and around Durham County into segments of
+          about half a mile and scores how promising each one is as a trail.
+          <span id="summary"></span>
+        </p>
+      </section>
+
+      <section>
+        <h2>Top corridors</h2>
+        <p class="hint">Segments that score highest. Click one to zoom to it.</p>
+        <ol id="top-segments" class="top-list"></ol>
+      </section>
+
+      <section>
+        <h2>How segments are scored</h2>
+        <p>Each segment gets up to 100 points:</p>
+        <table class="weights">
+          <tbody id="weights"></tbody>
+        </table>
+        <ul class="factors">
+          <li><strong>Connects networks:</strong> how many separate trail and bike networks, existing or planned, are within 500 ft. Two or more means the segment would close a gap.</li>
+          <li><strong>Few easement deeds:</strong> deeds per mile. Each deed is a separate agreement that would need renegotiating.</li>
+          <li><strong>Near planned facility:</strong> how much of the segment runs alongside a proposed trail or bike project.</li>
+          <li><strong>Corridor width:</strong> room for a 12 ft trail plus clearance.</li>
+          <li><strong>Length:</strong> full points at half a mile. Short pieces only score well if they connect something.</li>
+        </ul>
+        <p>High is 60 or more, Medium 40–59, Low under 40.</p>
+      </section>
+
+      <section>
+        <h2>Before anything gets built</h2>
+        <ul>
+          <li>
+            <strong>Utility easements don't allow public trails.</strong> They give Duke Energy the
+            right to run and maintain its lines. A trail would need new agreements with each
+            property owner along the route, as well as with Duke Energy.
+          </li>
+          <li>
+            <strong>Duke Energy does allow shared-use paths</strong> in its corridors, up to 12 ft
+            wide, as long as the lines stay accessible for maintenance and plantings stay low.
+          </li>
+          <li>
+            <strong>It's been done.</strong> Trails already run inside some Durham corridors, such
+            as the neighborhood trail along the power line in Woodcroft. The map shows how much
+            existing trail each segment already contains.
+          </li>
+          <li>
+            <strong>This is a screening tool, not an engineering study.</strong> The scores don't
+            account for terrain, streams, road crossings or tree cover. A high score means a
+            corridor is worth a closer look.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Learn more</h2>
+        <ul>
+          <li><a href="https://www.carolinathreadtrail.org/wp-content/uploads/2018/12/Working-with-Duke-Energy.pdf">Working with Duke Energy</a>: how the Carolina Thread Trail builds in Duke Energy corridors (PDF)</li>
+          <li><a href="https://www.durhamnc.gov/2854/Trails-Greenways-Master-Plan-2011">Durham Trails and Greenways Master Plan</a></li>
+          <li><a href="https://live-durhamnc.opendata.arcgis.com/maps/durham-hike-bike-web-map/about">Durham Hike &amp; Bike Map</a></li>
+          <li><a href="https://github.com/davidbradway/Energy-Transportation-Trails">Source code, data sources and method</a></li>
+        </ul>
+      </section>
+    </aside>
+
+    <div id="map"></div>
+  </main>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script src="app.js"></script>
 </body>

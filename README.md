@@ -15,10 +15,14 @@ easement could close a gap in the network.
 
 - **Easement corridors**, split into segments of about half a mile and colored by feasibility:
   High (60+), Medium (40–59), Low (under 40).
-- **Existing and proposed trails, greenways, bike lanes and future bike facilities** from the
+- **Existing and proposed trails, greenways, bike facilities and future bike projects** from the
   City of Durham.
 - Click a segment to see its score breakdown, length, width, which networks it reaches, and
   which planned projects are nearby.
+- A **sidebar** explains the project and how scores work, lists the top 10 corridors (click one
+  to zoom to it), sets out the caveats, and links to further reading. On phones it slides over
+  the map from the "About & top corridors" button.
+- The header shows the date the source data was downloaded.
 
 ## How segments are scored
 
@@ -73,23 +77,29 @@ pytest
   that no personal fields are ever requested.
 - `tests/test_data.py`: checks on the published files in `docs/data/`: geometry types,
   coordinates, file size, score consistency, and that no landowner names are published. These
-  tests are skipped until `build.py` has been run.
+  are skipped if `docs/data/` hasn't been built.
 
 ## Deployment
 
 Every push to `main` runs the tests and then publishes `docs/` to GitHub Pages
-([.github/workflows/pages.yml](.github/workflows/pages.yml)). CI doesn't have the raw data, so
-after changing the pipeline, run `python build.py` locally and commit the updated `docs/data/`.
+([.github/workflows/pages.yml](.github/workflows/pages.yml)). CI doesn't download or rebuild the
+data, so after refreshing the data or changing the pipeline, run `python build.py` (with
+`--refresh` for new data) locally and commit the updated `docs/data/`.
 
 ## Project layout
 
 ```
-build.py            data pipeline: clip, simplify, score, write docs/data/
+build.py            data pipeline: download (--refresh), clip, simplify, score, write docs/data/
 corridors.py        corridor segmentation and feasibility scoring
 docs/               the static site served by GitHub Pages
-  index.html, app.js, style.css
-  data/             generated GeoJSON + meta.json
-tests/
+  index.html        page and sidebar text
+  app.js            map, popups, legend, sidebar lists
+  style.css
+  data/             generated GeoJSON + meta.json (committed)
+raw/                downloaded source data (not committed)
+tests/              pytest suite
+PLAN.md             project plan and findings so far
+.github/workflows/  test-and-deploy workflow
 ```
 
 ## Data sources
@@ -112,6 +122,7 @@ project data are never fetched or published.
 - [Working with Duke Energy](https://www.carolinathreadtrail.org/wp-content/uploads/2018/12/Working-with-Duke-Energy.pdf),
   Carolina Thread Trail
 - [Durham Trails and Greenways Master Plan](https://www.durhamnc.gov/2854/Trails-Greenways-Master-Plan-2011)
+- [Durham Hike & Bike Map](https://live-durhamnc.opendata.arcgis.com/maps/durham-hike-bike-web-map/about)
 
 ## License
 

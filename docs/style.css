@@ -12,8 +12,139 @@ body {
 }
 
 header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
   padding: 10px 16px;
   border-bottom: 1px solid #d9dee3;
+}
+
+#sidebar-toggle {
+  flex: none;
+  padding: 6px 10px;
+  border: 1px solid #c2410c;
+  border-radius: 4px;
+  background: #fff;
+  color: #9a3412;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sidebar-open #sidebar-toggle {
+  background: #ea580c;
+  border-color: #ea580c;
+  color: #fff;
+}
+
+main {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+#sidebar {
+  display: none;
+  flex: none;
+  width: 340px;
+  overflow-y: auto;
+  padding: 4px 16px 16px;
+  border-right: 1px solid #d9dee3;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background: #fff;
+}
+
+.sidebar-open #sidebar {
+  display: block;
+}
+
+#sidebar h2 {
+  margin: 16px 0 6px;
+  font-size: 1rem;
+}
+
+#sidebar p,
+#sidebar ul {
+  margin: 0 0 8px;
+}
+
+#sidebar ul {
+  padding-left: 18px;
+}
+
+#sidebar li {
+  margin-bottom: 6px;
+}
+
+#sidebar a {
+  color: #1d4ed8;
+}
+
+#sidebar .hint {
+  color: #52606d;
+}
+
+.top-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.top-list button {
+  display: block;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #e4e7eb;
+  border-radius: 4px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.top-list button:hover,
+.top-list button:focus-visible {
+  border-color: #ea580c;
+  background: #fff7ed;
+}
+
+.top-list .title {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.top-list .where {
+  display: block;
+  color: #52606d;
+  font-size: 0.8125rem;
+}
+
+.top-list li {
+  margin-bottom: 4px;
+}
+
+.weights {
+  border-collapse: collapse;
+  margin-bottom: 8px;
+}
+
+.weights td {
+  padding: 1px 12px 1px 0;
+}
+
+.weights td:last-child {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.factors li {
+  color: #3e4c59;
 }
 
 header h1 {
@@ -139,12 +270,21 @@ header p {
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   header p {
     display: none;
   }
 
   .legend {
     display: none;
+  }
+
+  /* On phones the sidebar slides over the map instead of beside it. */
+  #sidebar {
+    position: absolute;
+    inset: 0;
+    z-index: 1100; /* above Leaflet's controls (1000) */
+    width: auto;
+    border-right: none;
   }
 }

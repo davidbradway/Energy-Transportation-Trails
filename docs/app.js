@@ -100,6 +100,54 @@ function segmentPopup(weights) {
   };
 }
 
+const narrow = () => window.matchMedia("(max-width: 700px)").matches;
+
+function setSidebar(open) {
+  document.body.classList.toggle("sidebar-open", open);
+  document.getElementById("sidebar-toggle").setAttribute("aria-expanded", open);
+  map.invalidateSize();
+}
+
+function fillSidebar(meta, segments, segmentLayers) {
+  const { summary } = meta;
+  const high = summary.tiers.High || { segments: 0, miles: 0 };
+  document.getElementById("summary").textContent =
+    `${summary.miles} miles of corridor in ${summary.segments} segments; ` +
+    `${high.miles} miles score High.`;
+
+  document.getElementById("weights").innerHTML = Object.entries(FACTORS)
+    .map(([key, label]) => `<tr><td>${label}</td><td>${summary.weights[key]}</td></tr>`)
+    .join("");
+
+  const top = segments.features
+    .map((f) => f.properties)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 10);
+  const list = document.getElementById("top-segments");
+  for (const p of top) {
+    const nearby = (p.connects || p.planned || "").split("; ")[0];
+    const where = [
+      `${p.miles} mi`,
+      p.networks >= 2 ? `links ${p.networks} networks` : null,
+      nearby ? `near ${nearby}` : null,
+    ].filter(Boolean).join(" · ");
+    const item = document.createElement("li");
+    item.innerHTML = `<button type="button">
+        <span class="title"><span>Segment ${p.id}</span>
+          <span><span class="tier tier-${p.tier}">${p.tier}</span> ${p.score}</span></span>
+        <span class="where">${escapeHtml(where)}</span>
+      </button>`;
+    item.querySelector("button").addEventListener("click", () => {
+      const layer = segmentLayers.get(p.id);
+      if (narrow()) setSidebar(false);
+      map.fitBounds(layer.getBounds(), { maxZoom: 16 });
+      // Propagate to the tier group, which owns the popup.
+      layer.fire("click", { latlng: layer.getBounds().getCenter() }, true);
+    });
+    list.append(item);
+  }
+}
+
 function lines(data, style, title, filter) {
   return L.geoJSON(data, { style, filter }).bindPopup(featurePopup(title));
 }
@@ -142,9 +190,13 @@ async function main() {
   );
 
   const isProposed = (f) => f.properties.status === "Proposed";
+  const segmentLayers = new Map();
   const tier = (name) =>
-    L.geoJSON(segments, { style: STYLES[name], filter: (f) => f.properties.tier === name })
-      .bindPopup(segmentPopup(meta.summary.weights), { minWidth: 260, maxWidth: 340 });
+    L.geoJSON(segments, {
+      style: STYLES[name],
+      filter: (f) => f.properties.tier === name,
+      onEachFeature: (f, layer) => segmentLayers.set(f.properties.id, layer),
+    }).bindPopup(segmentPopup(meta.summary.weights), { minWidth: 260, maxWidth: 340 });
 
   const overlays = {
     "Durham County": L.geoJSON(county, { style: STYLES.county, interactive: false }),
@@ -162,9 +214,16 @@ async function main() {
     else layer.addTo(map);
   }
 
-  L.control.layers(basemaps, overlays, { collapsed: window.innerWidth < 600 }).addTo(map);
+  L.control.layers(basemaps, overlays, { collapsed: narrow() }).addTo(map);
   L.control.scale({ imperial: true, metric: false }).addTo(map);
   addLegend();
+  fillSidebar(meta, segments, segmentLayers);
 }
+
+document.getElementById("sidebar-toggle").addEventListener("click", () => {
+  setSidebar(!document.body.classList.contains("sidebar-open"));
+});
+// Start with the map visible on phones.
+if (narrow()) setSidebar(false);
 
 main();
