@@ -1,0 +1,17 @@
+# Raw source data (large; rebuilt into docs/data by build.py)
+/*.geojson
+/*.csv
+/*.kml
+/*.paper
+/raw/
+/DukeTransmissionEasements/
+/Existing_*/
+/Future_*/
+/MyETT/
+
+# Personal notes with contact info
+notes.md
+
+__pycache__/
+.pytest_cache/
+.venv/

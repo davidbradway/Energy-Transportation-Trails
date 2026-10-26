@@ -1,0 +1,37 @@
+{
+ "bounds": [
+  [
+   35.8632100003225,
+   -79.01630500030545
+  ],
+  [
+   36.239319999763495,
+   -78.69931600000963
+  ]
+ ],
+ "summary": {
+  "segments": 287,
+  "miles": 179.5,
+  "tiers": {
+   "High": {
+    "segments": 102,
+    "miles": 78.4
+   },
+   "Low": {
+    "segments": 70,
+    "miles": 23.8
+   },
+   "Medium": {
+    "segments": 115,
+    "miles": 77.3
+   }
+  },
+  "weights": {
+   "connectivity": 35,
+   "landowners": 20,
+   "planned": 15,
+   "width": 15,
+   "length": 15
+  }
+ }
+}

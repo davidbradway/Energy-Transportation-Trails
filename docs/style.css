@@ -1,0 +1,150 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: #1f2933;
+  background: #fff;
+}
+
+header {
+  padding: 10px 16px;
+  border-bottom: 1px solid #d9dee3;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+header h1 span {
+  font-weight: 400;
+  color: #52606d;
+}
+
+header p {
+  margin: 2px 0 0;
+  font-size: 0.875rem;
+  color: #52606d;
+}
+
+#map {
+  flex: 1;
+}
+
+.legend {
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.legend h4 {
+  margin: 0 0 4px;
+  font-size: 0.8125rem;
+}
+
+.legend .swatch {
+  display: inline-block;
+  width: 22px;
+  height: 0;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 3px solid;
+}
+
+.legend .swatch.dashed {
+  border-top-style: dashed;
+}
+
+.legend .swatch.fill {
+  height: 10px;
+  border: 1px solid;
+}
+
+.popup h3 {
+  margin: 0 0 4px;
+  font-size: 0.9375rem;
+}
+
+.popup table {
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.popup th {
+  padding-right: 8px;
+  text-align: left;
+  font-weight: 500;
+  color: #52606d;
+  vertical-align: top;
+}
+
+.popup table + table {
+  margin-top: 8px;
+}
+
+.popup .flag {
+  margin: 4px 0;
+  font-weight: 600;
+  color: #9a3412;
+}
+
+.tier {
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.tier-High {
+  background: #ea580c;
+  color: #fff;
+}
+
+.tier-Medium {
+  background: #fbbf24;
+  color: #1f2933;
+}
+
+.tier-Low {
+  background: #d6d3d1;
+  color: #1f2933;
+}
+
+.score th {
+  white-space: nowrap;
+}
+
+.score .bar {
+  width: 90px;
+}
+
+.score .bar span {
+  display: block;
+  height: 8px;
+  border-radius: 2px;
+  background: #ea580c;
+}
+
+.score .pts {
+  padding-left: 6px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  header p {
+    display: none;
+  }
+
+  .legend {
+    display: none;
+  }
+}
